@@ -15,6 +15,9 @@ const int TEST_LED = 13;
 
 const int BUTTON = 2;
 
+// Define variables
+int inByte = 0;
+
 
 void setup() {
 
@@ -31,16 +34,29 @@ void setup() {
 
 void loop() {
 
+  int buttonState = digitalRead(BUTTON);
+
   if (Serial.available()) {
     digitalWrite(TEST_LED, HIGH);
   }
   
-  int buttonState = digitalRead(BUTTON);
+  
 
   if (buttonState == HIGH) {
+    
     flash(3, 100);
+  } 
+  else if (Serial.available()) {
+    
+    inByte = Serial.read();
+    int activeLED = inByte - '1';
+    digitalWrite(LED[activeLED], HIGH);
+    delay(250);
+    digitalWrite(LED[activeLED], LOW);
+    delay(100);
   }
 }
+
 
 void flash(int cycles, int duration) {
 
