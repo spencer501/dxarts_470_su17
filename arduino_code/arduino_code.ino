@@ -8,43 +8,43 @@
  */
 
 // Define constants
-#define LED_PIN_R 6
-#define LED_PIN_Y 5
-#define LED_PIN_G 4
-#define LED_PIN_B 3
+const int LED_R = 6;
+const int LED_Y = 5;
+const int LED_G = 4;
+const int LED_B = 3;
 
-#define BUTTON_PIN 2
+const int BUTTON = 2;
 
 
 void setup() {
 
-  pinMode(LED_PIN_R, OUTPUT);
-  pinMode(LED_PIN_Y, OUTPUT);
-  pinMode(LED_PIN_G, OUTPUT);
-  pinMode(LED_PIN_B, OUTPUT);
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_Y, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  pinMode(LED_B, OUTPUT);
 
-  pinMode(BUTTON_PIN, INPUT);
+  pinMode(BUTTON, INPUT);
   
 }
 
 void loop() {
 
-  int buttonActive = digitalRead(BUTTON_PIN);
+  int buttonActive = digitalRead(BUTTON);
 
   if (buttonActive == HIGH) {
     
-    digitalWrite(LED_PIN_R, HIGH);
-    digitalWrite(LED_PIN_Y, HIGH);
-    digitalWrite(LED_PIN_G, HIGH);
-    digitalWrite(LED_PIN_B, HIGH);
+    digitalWrite(LED_R, HIGH);
+    digitalWrite(LED_Y, HIGH);
+    digitalWrite(LED_G, HIGH);
+    digitalWrite(LED_B, HIGH);
     delay(100);
   }
   else {
 
-    digitalWrite(LED_PIN_R, LOW);
-    digitalWrite(LED_PIN_Y, LOW);
-    digitalWrite(LED_PIN_G, LOW);
-    digitalWrite(LED_PIN_B, LOW);
+    digitalWrite(LED_R, LOW);
+    digitalWrite(LED_Y, LOW);
+    digitalWrite(LED_G, LOW);
+    digitalWrite(LED_B, LOW);
     delay(100);
   }
 
