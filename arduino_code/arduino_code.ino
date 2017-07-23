@@ -27,10 +27,24 @@ void loop() {
 
   int buttonState = digitalRead(BUTTON);
 
-  for (int i=0; i < TOTAL_LED; i++) {
-    digitalWrite(LED[i], buttonState);
+  if (buttonState == HIGH) {
+    flash(3, 100);
   }
+}
 
-  delay(100);
+void flash(int cycles, int duration) {
+
+  for (int i=0; i < cycles; i++) {
+  
+    for (int i=0; i < TOTAL_LED; i++) {
+      digitalWrite(LED[i], HIGH);
+    }
+    delay(duration);
+    
+    for (int i=0; i < TOTAL_LED; i++) {
+      digitalWrite(LED[i], LOW);
+    }
+    delay(duration);
+  }
 }
 
