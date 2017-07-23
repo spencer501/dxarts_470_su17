@@ -11,20 +11,30 @@
 const int LED[] = {3, 4, 5, 6};
 const int TOTAL_LED = 4;
 
+const int TEST_LED = 13;
+
 const int BUTTON = 2;
 
 
 void setup() {
 
+  Serial.begin(9600);
+
   for (int i=0; i < TOTAL_LED; i++) {
     pinMode(LED[i], OUTPUT);
   }
+
+  pinMode(TEST_LED, OUTPUT);
 
   pinMode(BUTTON, INPUT);
 }
 
 void loop() {
 
+  if (Serial.available()) {
+    digitalWrite(TEST_LED, HIGH);
+  }
+  
   int buttonState = digitalRead(BUTTON);
 
   if (buttonState == HIGH) {
