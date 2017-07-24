@@ -48,7 +48,31 @@ for event in EventSource(url):
                   'Title:', change['title'], '\n',
                   'Average:', aveDiff,
                   'Max:', maxDiff, '\n')
-            
-            
-            
-            
+
+
+     
+def scaleSize(inputSize):
+"""
+scaleSize takes in a given number (preferably int <= 0) and returns a new,
+scaled value.
+    
+    inputSize: Number to be scaled
+    
+    Returns: A scaled value from 1 to 4, or 5 if the input is out of the
+        intended range
+        
+"""
+    
+    if (inputSize % 100 == 0):
+        scaledValue = 1
+    elif (inputSize % 1000 == 0):
+        scaledValue = 2
+    elif (inputSize % 10000 == 0):
+        scaledValue = 3
+    elif (inputSize % 100000 == 0):
+        scaledValue = 4
+    else:
+        scaledValue = 5
+    
+    
+    return scaledValue
