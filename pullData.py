@@ -7,6 +7,32 @@ Modeled after: https://wikitech.wikimedia.org/wiki/EventStreams
 import json
 from sseclient import SSEClient as EventSource
 
+
+def scaleSize(inputSize):
+    """
+    scaleSize takes in a given number (preferably int <= 0) and returns a new,
+    scaled value.
+        
+        inputSize: Number to be scaled
+        
+        Returns: A scaled value from 1 to 4, or 5 if the input is out of the
+            intended range       
+    """
+    
+    if (inputSize // 10 == 0):
+        scaledValue = 1
+    elif (inputSize // 100 == 0):
+        scaledValue = 2
+    elif (inputSize // 1000 == 0):
+        scaledValue = 3
+    elif (inputSize // 10000 == 0):
+        scaledValue = 4
+    else:
+        scaledValue = 5
+
+    return scaledValue
+
+
 # Parameters for stream source
 url = 'https://stream.wikimedia.org/v2/stream/recentchange'
 wiki = 'enwiki'
@@ -31,15 +57,16 @@ for event in EventSource(url):
             
             oldSize = change['length']['old'] or 0
             newSize = change['length']['new']
-            sizeDiff = newSize - oldSize
+            sizeDiff = abs(newSize - oldSize)
             
             numChanges = numChanges + 1
             
-            aveDiff = (aveDiff * (numChanges - 1) + abs(sizeDiff))/numChanges
+            aveDiff = (aveDiff * (numChanges - 1) + sizeDiff)/numChanges
             
             if (abs(sizeDiff) > maxDiff):
                 maxDiff = abs(sizeDiff)
-            
+                
+            scaleValue = scaleSize(sizeDiff)
             
             # Logging details
             print(oldSize, '->', newSize, '=', 
@@ -47,32 +74,5 @@ for event in EventSource(url):
                   'Type:', change['type'], '\n',
                   'Title:', change['title'], '\n',
                   'Average:', aveDiff,
-                  'Max:', maxDiff, '\n')
-
-
-     
-def scaleSize(inputSize):
-"""
-scaleSize takes in a given number (preferably int <= 0) and returns a new,
-scaled value.
-    
-    inputSize: Number to be scaled
-    
-    Returns: A scaled value from 1 to 4, or 5 if the input is out of the
-        intended range
-        
-"""
-    
-    if (inputSize % 100 == 0):
-        scaledValue = 1
-    elif (inputSize % 1000 == 0):
-        scaledValue = 2
-    elif (inputSize % 10000 == 0):
-        scaledValue = 3
-    elif (inputSize % 100000 == 0):
-        scaledValue = 4
-    else:
-        scaledValue = 5
-    
-    
-    return scaledValue
+                  'Max:', maxDiff, '\n',
+                  'Scaled:', scaleValue, '\n')
