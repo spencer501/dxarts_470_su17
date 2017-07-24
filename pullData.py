@@ -12,6 +12,11 @@ url = 'https://stream.wikimedia.org/v2/stream/recentchange'
 wiki = 'enwiki'
 changeTypes = {'new', 'edit'}
 
+# Scaling parameters
+maxDiff = 0
+aveDiff = 0
+numChanges = 0
+
 for event in EventSource(url):
     
     if (event.event == 'message'):
@@ -28,7 +33,22 @@ for event in EventSource(url):
             newSize = change['length']['new']
             sizeDiff = newSize - oldSize
             
+            numChanges = numChanges + 1
+            
+            aveDiff = (aveDiff * (numChanges - 1) + abs(sizeDiff))/numChanges
+            
+            if (abs(sizeDiff) > maxDiff):
+                maxDiff = abs(sizeDiff)
+            
+            
+            # Logging details
             print(oldSize, '->', newSize, '=', 
                   'Diff:', sizeDiff, '\t',
                   'Type:', change['type'], '\n',
-                  'Title:', change['title'], '\n')
+                  'Title:', change['title'], '\n',
+                  'Average:', aveDiff,
+                  'Max:', maxDiff, '\n')
+            
+            
+            
+            
