@@ -37,7 +37,7 @@ void loop() {
     digitalWrite(TEST_LED, HIGH);
   }
   
-  if (buttonState == HIGH) {
+  if (buttonState == LOW) {
     
     flash(3, 100);
   } 
