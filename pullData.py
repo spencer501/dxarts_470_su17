@@ -10,7 +10,7 @@ from sseclient import SSEClient as EventSource
 # Parameters for stream source
 url = 'https://stream.wikimedia.org/v2/stream/recentchange'
 wiki = 'enwiki'
-changeType = 'edit'
+changeTypes = {'new', 'edit'}
 
 for event in EventSource(url):
     
@@ -22,12 +22,13 @@ for event in EventSource(url):
             continue
         
         if (change['wiki'] == wiki and
-            change['type'] == changeType):
+            change['type'] in changeTypes):
             
-            oldSize = change['revision']['old']
-            newSize = change['revision']['new']
+            oldSize = change['length']['old'] or 0
+            newSize = change['length']['new']
             sizeDiff = newSize - oldSize
             
-            print('Old size:', oldSize, 
-                  'New size:', newSize, 
-                  'Diff:', sizeDiff)
+            print(oldSize, '->', newSize, '=', 
+                  'Diff:', sizeDiff, '\t',
+                  'Type:', change['type'], '\n',
+                  'Title:', change['title'], '\n')
