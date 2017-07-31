@@ -1,40 +1,36 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jul 24 01:07:41 2017
-
-@author: spenc
-"""
 
 # Import libraries
 import time
 import serial
 import struct
 import json
+import math
 from sseclient import SSEClient as EventSource
 
 def scaleSize(inputSize):
-    """
-    scaleSize takes in a given number (preferably int <= 0) and returns a new,
-    scaled value.
+    """Scale a given value.
+    
+    The return values is created using a logarithmic scale (base 10), with all
+    decimal values truncated.
+    
+    args:
         
-        inputSize: Number to be scaled
+        inputSize -- number to be scaled
         
-        Returns: A scaled value from 1 to 4, or 5 if the input is out of the
-            intended range       
+    returns:
+        
+        The truncated log10 value of the input
+        
     """
     
-    if (inputSize // 10 == 0):
-        scaledValue = 1
-    elif (inputSize // 100 == 0):
-        scaledValue = 2
-    elif (inputSize // 1000 == 0):
-        scaledValue = 3
-    elif (inputSize // 10000 == 0):
-        scaledValue = 4
-    else:
-        scaledValue = 5
-
+    try:
+        scaledValue = math.log10(inputSize)
+        scaledValue = math.trunc(scaledValue)
+    except ValueError:
+        scaledValue = 0
+    
     return scaledValue
+
 
 # Create Serial object
 port = 'COM5'
@@ -81,6 +77,3 @@ for event in EventSource(url):
 
 # Close the Serial connection so it can be used by other processes
 ser.close()
-
-            
-
