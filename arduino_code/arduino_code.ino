@@ -31,7 +31,10 @@ void loop() {
 
   if (buttonState == HIGH) {
 
-    cascade(1, 50);
+    cascade(3, 50);
+    delay(100);
+    pulse(1, 50);
+    delay(1000);
   }
   else if (Serial.available() > 0) {
 
@@ -58,6 +61,26 @@ void cascade(int cycles, int duration) {
       digitalWrite(SOLENOID[i], LOW);
       delay(duration);
     }
+  }
+}
+
+void pulse(int cycles, int duration) {
+
+  for (int i = 0; i < cycles; i++) {
+
+    for (int i = 0; i < TOTAL_SOLENOID; i++) {
+
+      digitalWrite(SOLENOID[i], HIGH);
+    }
+
+    delay(duration);
+
+    for (int i = 0; i < TOTAL_SOLENOID; i++) {
+
+      digitalWrite(SOLENOID[i], LOW);
+    }
+
+    delay(duration);
   }
 }
 
