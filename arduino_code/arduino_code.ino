@@ -31,16 +31,16 @@ void loop() {
 
   if (buttonState == HIGH) {
 
-    cascade(1, 100);
+    cascade(1, 50);
   }
   else if (Serial.available() > 0) {
 
     int activeSolenoid = Serial.read() - 1;
 
     digitalWrite(SOLENOID[activeSolenoid], HIGH);
-    delay(175);
+    delay(50);
     digitalWrite(SOLENOID[activeSolenoid], LOW);
-    delay(100);
+    delay(60);
 
     Serial.print(activeSolenoid + 1);
   }
