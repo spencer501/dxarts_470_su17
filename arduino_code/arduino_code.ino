@@ -29,7 +29,7 @@ void loop() {
 
   int buttonState = digitalRead(BUTTON);
 
-  if (buttonState == LOW) {
+  if (buttonState == HIGH) {
 
     cascade(1, 100);
   }
