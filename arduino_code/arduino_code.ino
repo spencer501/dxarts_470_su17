@@ -1,72 +1,86 @@
 /*
- * Spencer Pease
- * DXARTS 470
- * 
- * Draft 1:
- * Create an array of LEDs that are controlled via external
- * serial communication
- */
+   Spencer Pease
+   DXARTS 470
+
+   Draft 2:
+   Create an array of solenoids that are controlled via external
+   serial communication
+*/
 
 // Define constants
-const int LED[] = {3, 4, 5, 6};
-const int TOTAL_LED = 4;
+const int TOTAL_SOLENOID = 4;
+const int SOLENOID[TOTAL_SOLENOID] = {3, 4, 5, 6};
 
-const int TEST_LED = 13;
-
-const int BUTTON = 2;
+const int BUTTON = 13;
+const int LED = 12;
 
 
 void setup() {
 
   Serial.begin(9600);
 
-  for (int i=0; i < TOTAL_LED; i++) {
-    pinMode(LED[i], OUTPUT);
+  for (int i = 0; i < TOTAL_SOLENOID; i++) {
+    pinMode(SOLENOID[i], OUTPUT);
   }
 
-  pinMode(TEST_LED, OUTPUT);
-
   pinMode(BUTTON, INPUT);
+  pinMode(LED, OUTPUT);
 }
 
 void loop() {
 
   int buttonState = digitalRead(BUTTON);
 
-  if (Serial.available() > 0) {
-    digitalWrite(TEST_LED, HIGH);
-  }
-  
-  if (buttonState == LOW) {
-    
-    flash(3, 100);
-  } 
-  else if (Serial.available() > 0) {
-    
-    int activeLED = Serial.read() - 1;
-    
-    digitalWrite(LED[activeLED], HIGH);
-    delay(175);
-    digitalWrite(LED[activeLED], LOW);
-    delay(100);
+  if (buttonState == HIGH) {
 
-    Serial.print(activeLED + 1);
+    cascade(1, 250);
+//    pulse(1, 500);
+    delay(1000);
+  }
+  else if (Serial.available() > 0) {
+
+    int activeSolenoid = Serial.read() - 1;
+
+    digitalWrite(SOLENOID[activeSolenoid], HIGH);
+    delay(50);
+    digitalWrite(SOLENOID[activeSolenoid], LOW);
+    delay(60);
+
+    Serial.print(activeSolenoid + 1);
   }
 }
 
 
-void flash(int cycles, int duration) {
+void cascade(int cycles, int duration) {
 
-  for (int i=0; i < cycles; i++) {
-  
-    for (int i=0; i < TOTAL_LED; i++) {
-      digitalWrite(LED[i], HIGH);
+  for (int i = 0; i < cycles; i++) {
+
+    for (int i = 0; i < TOTAL_SOLENOID; i++) {
+
+      digitalWrite(SOLENOID[i], HIGH);
+      delay(50);
+      digitalWrite(SOLENOID[i], LOW);
+      delay(duration);
     }
+  }
+}
+
+void pulse(int cycles, int duration) {
+
+  for (int i = 0; i < cycles; i++) {
+
+    for (int i = 0; i < TOTAL_SOLENOID; i++) {
+
+      digitalWrite(SOLENOID[i], HIGH);
+    }
+
     delay(duration);
-    
-    for (int i=0; i < TOTAL_LED; i++) {
-      digitalWrite(LED[i], LOW);
+
+    for (int i = 0; i < TOTAL_SOLENOID; i++) {
+
+      digitalWrite(SOLENOID[i], LOW);
     }
+
     delay(duration);
   }
 }
