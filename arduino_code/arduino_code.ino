@@ -8,10 +8,11 @@
 */
 
 // Define constants
-const int SOLENOID[] = {3, 4, 5, 6};
 const int TOTAL_SOLENOID = 4;
+const int SOLENOID[TOTAL_SOLENOID] = {3, 4, 5, 6};
 
-const int BUTTON = 2;
+const int BUTTON = 13;
+const int LED = 12;
 
 
 void setup() {
@@ -23,6 +24,7 @@ void setup() {
   }
 
   pinMode(BUTTON, INPUT);
+  pinMode(LED, OUTPUT);
 }
 
 void loop() {
@@ -31,9 +33,8 @@ void loop() {
 
   if (buttonState == HIGH) {
 
-    cascade(3, 50);
-    delay(100);
-    pulse(1, 50);
+    cascade(1, 250);
+//    pulse(1, 500);
     delay(1000);
   }
   else if (Serial.available() > 0) {
@@ -57,7 +58,7 @@ void cascade(int cycles, int duration) {
     for (int i = 0; i < TOTAL_SOLENOID; i++) {
 
       digitalWrite(SOLENOID[i], HIGH);
-      delay(duration);
+      delay(50);
       digitalWrite(SOLENOID[i], LOW);
       delay(duration);
     }
