@@ -32,14 +32,13 @@ def scaleSize(inputSize):
 
 class WikiReader:
     
-    def __init__(self, serialConnect, wikiName = 'enwiki'):
+    def __init__(self, wikiName = 'enwiki'):
         
         self.__url = 'https://stream.wikimedia.org/v2/stream/recentchange'
         self.__changeTypes = {'new', 'edit'}
         self.wiki = wikiName
-        self.serial = serialConnect
         
-    def streamChanges(self, stopper):
+    def streamChanges(self, serial, stopper):
         
         for event in EventSource(self.__url):
     
@@ -59,7 +58,7 @@ class WikiReader:
                         
                     scaleValue = scaleSize(sizeDiff)
                     
-                    self.serial.write(struct.pack('>B', scaleValue))
+                    serial.write(struct.pack('>B', scaleValue))
                     
                     print('Size:', sizeDiff, 'Output:', scaleValue)
         
