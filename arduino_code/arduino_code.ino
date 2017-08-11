@@ -45,8 +45,6 @@ void loop() {
     delay(50);
     digitalWrite(SOLENOID[activeSolenoid], LOW);
     delay(60);
-
-    Serial.print(activeSolenoid + 1);
   }
 }
 
