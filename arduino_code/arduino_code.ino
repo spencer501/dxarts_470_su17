@@ -39,7 +39,7 @@ void loop() {
   }
   else if (Serial.available() > 0) {
 
-    int activeSolenoid = Serial.read() - 1;
+    int activeSolenoid = Serial.read();
 
     digitalWrite(SOLENOID[activeSolenoid], HIGH);
     delay(50);
